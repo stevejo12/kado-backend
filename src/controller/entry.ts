@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { cNewUser } from "../models/entry.model";
 // import { EntryService } from "../services/index";
 
-const addUser = (req: Request, res: Response, next: NextFunction) => {
+const addUser = (req: cNewUser, res: Response, next: NextFunction) => {
   try {
     // const service = new EntryService();
 

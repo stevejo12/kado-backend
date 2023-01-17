@@ -1,6 +1,12 @@
-export class NewUser {
-  public username: string = ""
-  public email: string = ""
-  public password: string = ""
-  public profilePicture: string = ""
+import { Request } from "express";
+
+interface NewUser {
+  username: string;
+  email: string;
+  password: string;
+  profilePicture: string;
+}
+
+export interface cNewUser extends Request {
+  cUser: NewUser;
 }
