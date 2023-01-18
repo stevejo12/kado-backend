@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import logger from "../middlewares/logger";
 
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -10,12 +11,12 @@ const pool = new Pool({
 
 pool 
   .connect()
-  .then(() => console.log("PostgreSQL is connected"))
-  .catch(err => console.error("postgreSQL connection error: " + err))
+  .then(() => logger.info("PostgreSQL is connected"))
+  .catch(err => logger.error("postgreSQL connection error: " + err))
 
 
 pool.on('error', err => {
-  console.error('something bad has happened!', err.stack)
+  logger.error('something bad has happened!', err.stack)
 });
 
 export default pool;

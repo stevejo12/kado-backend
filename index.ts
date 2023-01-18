@@ -4,6 +4,7 @@ import winston from "winston";
 import dotenv from "dotenv";
 import bodyParser from "body-parser"
 import routes from "./src/routes/index";
+import logger from "./src/middlewares/logger";
 
 dotenv.config();
 
@@ -25,6 +26,6 @@ app.use("/v1", routes)
 
 const server = http.createServer(app);
 server.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
+  logger.info(`⚡️[server]: Server is running at http://localhost:${port}`)
 })
 

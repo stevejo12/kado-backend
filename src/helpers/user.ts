@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import logger from "../middlewares/logger";
 
 const hashPassword = async (password: string): Promise<string> => {
   const saltRounds: number = parseInt(process.env.SALT_ROUNDS || "", 10);
@@ -10,9 +11,9 @@ const hashPassword = async (password: string): Promise<string> => {
     })
     .catch((err: any) => {
       if (err instanceof Error) {
-        console.error(err.message);
+        logger.error("Error error hashed password", err.message);
       } else if (typeof err === "string") {
-        console.error(err);
+        logger.error("Error string hashed password", err);
       }
     });
 
