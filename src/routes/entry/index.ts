@@ -14,11 +14,7 @@ router.post("/add", async (req: Request, res: Response, next: NextFunction) => {
     profilePicture: req.body.profilePicture
   }
 
-  addUser(cReq,res,next);
-
-  // TODO
-  // wrapper to determine success or fail of request
-  res.send(cReq.cUser);
+  return addUser(cReq,res,next);
 })
 
 export default router;

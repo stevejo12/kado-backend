@@ -6,8 +6,6 @@ import bodyParser from "body-parser"
 import routes from "./src/routes/index";
 import logger from "./src/middlewares/logger";
 
-dotenv.config();
-
 const app: Express = express();
 const port = process.env.PORT;
 

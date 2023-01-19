@@ -1,24 +1,17 @@
 import { NextFunction, Request, Response } from "express";
+import { ResponseWrapper } from "../helpers/responseWrapper";
 import { cNewUser } from "../models/entry.model";
-// import { EntryService } from "../services/index";
+import { createNewUser } from "../services";
 
-const addUser = (req: cNewUser, res: Response, next: NextFunction) => {
-  try {
-    // const service = new EntryService();
+const addUser = async (req: cNewUser, res: Response, next: NextFunction): Promise<Response> => {
+  const response: ResponseWrapper = new ResponseWrapper(res);
 
-    // TODO
-    // pisahin newUser data nya kesini.
-    // nanti buat dipass ke service
-    console.log('req body:', req.body);
+  // TODO
+  // CHECK IF THE USERNAME OR EMAIL ALREADY EXIST
 
-    // res.json(await service.create())
-  } catch (err: any) {
-    if (err instanceof Error) {
-      console.error(`Error while creating new user`, err.message);
-    } else if (typeof err === "string") {
-      console.error(err);
-    }
-  }
+  const dbResponse = await createNewUser(req.cUser);
+
+  return response.created(dbResponse);
 }
 
 export { addUser };

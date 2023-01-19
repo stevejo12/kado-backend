@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-esm index.ts"
+    "start": "ts-node-esm -r dotenv/config index.ts"
   },
   "keywords": [],
   "author": "",
