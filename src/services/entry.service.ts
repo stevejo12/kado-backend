@@ -45,6 +45,7 @@ const createNewUser = async (newUser: NewUser) : Promise<ResponseMessage>  => {
     logger.error("Register new user: " + error)
     return {
       success: false,
+      status: 500,
       data: { message: "Error creating new user. Try again!" }
     }
   }
@@ -78,6 +79,7 @@ const getUserByEmail = async (email: string): Promise<ResponseMessage> => {
     logger.error("Get user by email: " + error)
     return {
       success: false,
+      status: 500,
       data: { 
         emailExist: true,
         message: error 
@@ -114,6 +116,7 @@ const getUserByUsername = async (username: string) : Promise<ResponseMessage> =>
     logger.error("Get user by username: " + error)
     return {
       success: false,
+      status: 500,
       data: { 
         userExist: true,
         message: error 

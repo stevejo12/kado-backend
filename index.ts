@@ -1,14 +1,14 @@
 import express, { Express, Request, Response } from "express";
 import http from "http";
-import winston from "winston";
-import dotenv from "dotenv";
 import bodyParser from "body-parser"
+import cors from "cors";
 import routes from "./src/routes/index";
 import logger from "./src/middlewares/logger";
 
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({

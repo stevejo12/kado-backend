@@ -11,7 +11,7 @@ router.post("/add", async (req: Request, res: Response, next: NextFunction) => {
     username: req.body.username,
     email: req.body.email,
     password: await hashPassword(req.body.password as string),
-    profilePicture: req.body.profilePicture
+    profilePicture: "https://images.pexels.com/photos/1310524/pexels-photo-1310524.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
   }
 
   return addUser(cReq,res,next);
