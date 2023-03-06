@@ -1,4 +1,4 @@
-import { isEmailExist, isUsernameExist } from "../helpers/user";
+import { compareStringPasswordToHashedPassword, isEmailExist, isUsernameExist } from "../helpers/user";
 import logger from "../middlewares/logger";
 import { NewUser } from "../models/entry.model";
 import { ResponseMessage } from "../models/response.model";
@@ -118,11 +118,80 @@ const getUserByUsername = async (username: string) : Promise<ResponseMessage> =>
       success: false,
       status: 500,
       data: { 
-        userExist: true,
+        userExist: false,
         message: error 
       }
     }
   }
 }
 
-export { createNewUser, getUserByEmail, getUserByUsername };
+const getUserByEmailAndPassword = async (email: string, password: string) : Promise<ResponseMessage> => {
+  try {
+    const result = await db.query(
+      `SELECT * FROM users WHERE email=$1`,
+      [email]
+    )
+
+    if (result && result.rowCount > 0) {
+      const hashedPassword = result.rows[0].password as string || null;
+
+      if (password !== null) {
+        const isPasswordCorrect = await compareStringPasswordToHashedPassword(password, hashedPassword as string);
+        
+        if (isPasswordCorrect) {
+          return {
+            success: true,
+            data: {
+              message: "Success Login",
+              userInfo: result.rows[0],
+              token: "token"
+            }
+          }
+        } else {
+          return {
+            success: false,
+            data: { 
+              userExist: false,
+              message: "Password is incorrect" 
+            }
+          } 
+        }
+      } else {
+        logger.warn("User with id", result.rows[0].id, "has no password");
+        return {
+          success: false,
+          status: 500,
+          data: { 
+            userExist: false,
+            message: "Something's wrong!" 
+          }
+        } 
+      }
+    } else {
+      return {
+        success: true,
+        data: {
+          userExist: false,
+          message: "Success Search"
+        }
+      }
+    }
+  } catch (error) {
+    logger.error("Get User By Email and Password: " + error)
+    return {
+      success: false,
+      status: 500,
+      data: { 
+        userExist: false,
+        message: error 
+      }
+    }
+  }
+}
+
+export { 
+  createNewUser, 
+  getUserByEmail, 
+  getUserByUsername, 
+  getUserByEmailAndPassword 
+};

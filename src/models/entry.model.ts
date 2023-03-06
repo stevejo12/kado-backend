@@ -10,3 +10,8 @@ export interface NewUser {
 export interface cNewUser extends Request {
   cUser: NewUser;
 }
+
+export interface LoginInfo {
+  email: string;
+  password: string;
+}

@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { ResponseWrapper } from "../helpers/responseWrapper";
-import { cNewUser } from "../models/entry.model";
-import { createNewUser } from "../services";
+import { cNewUser, LoginInfo } from "../models/entry.model";
+import { createNewUser, getUserByEmailAndPassword } from "../services";
 
 const addUser = async (req: cNewUser, res: Response, next: NextFunction): Promise<Response> => {
   const response: ResponseWrapper = new ResponseWrapper(res);
@@ -11,4 +11,12 @@ const addUser = async (req: cNewUser, res: Response, next: NextFunction): Promis
   return response.created(dbResponse);
 }
 
-export { addUser };
+const loggedInUser = async (user: LoginInfo, res: Response, next: NextFunction) => {
+  const response: ResponseWrapper = new ResponseWrapper(res);
+
+  const dbResponse = await getUserByEmailAndPassword(user.email, user.password);
+
+  return response.created(dbResponse);
+}
+
+export { addUser, loggedInUser };

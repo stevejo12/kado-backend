@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction} from "express";
-import { addUser } from "../../controller/index";
+import { addUser, loggedInUser } from "../../controller/index";
 import { hashPassword } from "../../helpers/user";
-import { cNewUser } from "../../models/entry.model";
+import { cNewUser, LoginInfo } from "../../models/entry.model";
 
 const router = express.Router();
 
@@ -15,6 +15,15 @@ router.post("/add", async (req: Request, res: Response, next: NextFunction) => {
   }
 
   return addUser(cReq,res,next);
+})
+
+router.get("/getByLogin", async (req: Request, res: Response, next: NextFunction) => {
+  let user: LoginInfo = {
+    email: req.body.email,
+    password: req.body.password
+  }
+
+  return loggedInUser(user, res, next);
 })
 
 export default router;

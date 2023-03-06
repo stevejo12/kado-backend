@@ -8,7 +8,7 @@ const hashPassword = async (password: string): Promise<string> => {
   const hashedPassword = await bcrypt
     .genSalt(saltRounds)
     .then((salt) => {
-      return bcrypt.hash("test", salt);
+      return bcrypt.hash(password, salt);
     })
     .catch((err: any) => {
       if (err instanceof Error) {
@@ -24,6 +24,12 @@ const hashPassword = async (password: string): Promise<string> => {
 
   return "";
 };
+
+const compareStringPasswordToHashedPassword = async (password: string, hashedPassword: string) : Promise<boolean> => {
+  const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
+
+  return isPasswordCorrect;
+}
 
 const isUsernameExist = async (username: string): Promise<boolean> => {
   const usernameExistRes = await getUserByUsername(username);
@@ -45,4 +51,4 @@ const isEmailExist = async (email: string): Promise<boolean> => {
   return false;
 }
 
-export { hashPassword, isUsernameExist, isEmailExist };
+export { hashPassword, compareStringPasswordToHashedPassword, isUsernameExist, isEmailExist };
