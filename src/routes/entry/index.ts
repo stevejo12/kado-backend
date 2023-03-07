@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction} from "express";
 import { addUser, loggedInUser } from "../../controller/index";
-import { hashPassword } from "../../helpers/user";
-import { cNewUser, LoginInfo } from "../../models/entry.model";
+import { generateJWT, hashPassword } from "../../helpers/user";
+import { cNewUser, LoginInfo, userTokenInfo } from "../../models/entry.model";
 
 const router = express.Router();
 
@@ -17,13 +17,21 @@ router.post("/add", async (req: Request, res: Response, next: NextFunction) => {
   return addUser(cReq,res,next);
 })
 
-router.get("/getByLogin", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/getByLogin", async (req: Request, res: Response, next: NextFunction) => {
   let user: LoginInfo = {
     email: req.body.email,
     password: req.body.password
   }
 
   return loggedInUser(user, res, next);
+})
+
+router.get("/generateRefreshToken", (req: Request, res: Response, next: NextFunction) => {
+  let userInfo: userTokenInfo = {
+    id: req.body.id
+  }
+
+  return generateJWT(userInfo.id);
 })
 
 export default router;

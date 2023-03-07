@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import logger from "../middlewares/logger";
 import { getUserByEmail, getUserByUsername } from "../services";
 
@@ -51,4 +52,12 @@ const isEmailExist = async (email: string): Promise<boolean> => {
   return false;
 }
 
-export { hashPassword, compareStringPasswordToHashedPassword, isUsernameExist, isEmailExist };
+const generateJWT = async (id: string) => {
+  const secret = process.env.JWT_TOKEN_SECRET || ""
+  
+  var token = jwt.sign({ id: id }, secret , { expiresIn: 600});
+
+  return token;
+}
+
+export { hashPassword, compareStringPasswordToHashedPassword, isUsernameExist, isEmailExist, generateJWT };

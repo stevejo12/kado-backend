@@ -1,4 +1,4 @@
-import { compareStringPasswordToHashedPassword, isEmailExist, isUsernameExist } from "../helpers/user";
+import { compareStringPasswordToHashedPassword, generateJWT, isEmailExist, isUsernameExist } from "../helpers/user";
 import logger from "../middlewares/logger";
 import { NewUser } from "../models/entry.model";
 import { ResponseMessage } from "../models/response.model";
@@ -139,12 +139,14 @@ const getUserByEmailAndPassword = async (email: string, password: string) : Prom
         const isPasswordCorrect = await compareStringPasswordToHashedPassword(password, hashedPassword as string);
         
         if (isPasswordCorrect) {
+          const token = await generateJWT(result.rows[0].id  as string);
+
           return {
             success: true,
             data: {
               message: "Success Login",
               userInfo: result.rows[0],
-              token: "token"
+              token: token
             }
           }
         } else {
