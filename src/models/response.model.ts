@@ -6,6 +6,7 @@ interface resMsg {
 export class ResponseMessage {
   public success: boolean 
   public data: any
+  public status?: number
 
   constructor(data: resMsg) {
     this.success = data.success;

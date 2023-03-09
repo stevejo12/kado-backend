@@ -1,14 +1,14 @@
 import express, { Express, Request, Response } from "express";
 import http from "http";
-import dotenv from "dotenv";
 import bodyParser from "body-parser"
+import cors from "cors";
 import routes from "./src/routes/index";
-
-dotenv.config();
+import logger from "./src/middlewares/logger";
 
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
@@ -24,6 +24,6 @@ app.use("/v1", routes)
 
 const server = http.createServer(app);
 server.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`)
+  logger.info(`⚡️[server]: Server is running at http://localhost:${port}`)
 })
 
